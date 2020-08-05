@@ -1,13 +1,7 @@
-import CheckBox from '@react-native-community/checkbox';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text } from 'react-native';
+import NextButton from '../components/NextButton';
+import OptionButton from '../components/OptionButton';
 import skills from '../data/skills';
 import { useCode } from '../hooks/codeProvider';
 
@@ -19,13 +13,7 @@ interface Skill {
 
 const SkillsList: React.FC = () => {
   const [skillArr, setSkillsArr] = useState<Skill[]>([]);
-  const {
-    step,
-    updateStep,
-    blueHandCode,
-    updateBlueHandCode,
-    generateCode,
-  } = useCode();
+  const { step, updateStep, blueHandCode, updateBlueHandCode } = useCode();
 
   useEffect(() => {
     const newSkillArr = skills.map((skill, i) => {
@@ -73,26 +61,24 @@ const SkillsList: React.FC = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <ScrollView style={styles.body}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
         <Text style={styles.sectionTitle}>Aptidões</Text>
 
         {skillArr.map((skill) => (
-          <TouchableOpacity
+          <OptionButton
+            isActive={skill.isChecked}
+            title={skill.name}
+            toggleState={() => handleSkillsArray(skill.name)}
             key={skill.code}
-            onPress={() => handleSkillsArray(skill.name)}
-            style={skill.isChecked ? styles.button : styles.disabledButton}
-          >
-            <Text>{skill.name}</Text>
-          </TouchableOpacity>
+          />
         ))}
       </ScrollView>
-      <TouchableOpacity
+
+      <NextButton
+        title="Gerar código"
         onPress={() => handleSkills()}
-        disabled={!canContinue()}
-        style={styles.bottomBtn}
-      >
-        <Text>Gerar código</Text>
-      </TouchableOpacity>
+        canContinue={() => !!canContinue()}
+      />
     </>
   );
 };
@@ -107,10 +93,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    marginTop: 8,
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
+    marginVertical: 12,
+    fontSize: 28,
+    letterSpacing: 2,
+    fontFamily: 'OpenSans-Bold',
+    color: 'white',
   },
   button: {
     backgroundColor: 'rgba(0, 200, 0, 1)',

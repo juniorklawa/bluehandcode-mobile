@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text } from 'react-native';
+import { View, StatusBar, StyleSheet, Text } from 'react-native';
 import { useCode } from '../hooks/codeProvider';
 
 interface Skill {
@@ -16,16 +16,21 @@ const ShowCode: React.FC = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <ScrollView style={styles.body}>
-        <Text style={styles.sectionTitle}>Código bluehand</Text>
+      <View style={styles.body}>
         <Text style={styles.sectionTitle}>{formattedCode}</Text>
-      </ScrollView>
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  body: { margin: 16, flex: 1 },
+  body: {
+    margin: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -80,
+  },
   bottomBtn: {
     height: 60,
     backgroundColor: 'green',
@@ -34,10 +39,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    marginTop: 8,
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
+    marginVertical: 12,
+    fontSize: 36,
+    letterSpacing: 2,
+    fontFamily: 'OpenSans-ExtraBold',
+    color: 'white',
   },
   checkBoxContainer: {
     flexDirection: 'row',

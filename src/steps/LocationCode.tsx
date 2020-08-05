@@ -5,13 +5,14 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  View,
 } from 'react-native';
 import CountryPicker, {
   Country,
   CountryCode,
 } from 'react-native-country-picker-modal';
 import { useCode } from '../hooks/codeProvider';
+import NextButton from '../components/NextButton';
 
 const LocationCode: React.FC = () => {
   const [countryCode, setCountryCode] = useState<CountryCode>('BR');
@@ -53,42 +54,72 @@ const LocationCode: React.FC = () => {
       <StatusBar barStyle="dark-content" />
       <ScrollView style={styles.body}>
         <Text style={styles.sectionTitle}>País</Text>
+        <View
+          style={{
+            backgroundColor: '#16425b',
+            paddingVertical: 16,
+            paddingHorizontal: 8,
+            borderRadius: 5,
+            borderColor: '#0582ca',
+            borderWidth: 2,
+          }}
+        >
+          <CountryPicker
+            theme={{
+              fontFamily: 'OpenSans-Regular',
+              onBackgroundTextColor: 'white',
+              backgroundColor: '#1b263b',
+            }}
+            countryCode={countryCode}
+            onSelect={onSelect}
+            withFilter
+            withFlag
+            withCallingCode
+            withEmoji
+            withCountryNameButton
+            withCallingCodeButton
+            visible={isModalVisible}
+          />
+        </View>
 
-        <CountryPicker
-          countryCode={countryCode}
-          onSelect={onSelect}
-          withFilter
-          withFlag
-          withCallingCode
-          withEmoji
-          withCountryNameButton
-          withCallingCodeButton
-          visible={isModalVisible}
-        />
-
-        <Text style={styles.sectionTitle}>Cidade (DDD)</Text>
-
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={(text) => setCityCode(text)}
-          keyboardType="numeric"
-          value={cityCode}
-        />
+        <Text style={[styles.sectionTitle, { marginTop: 48 }]}>
+          Cidade (DDD)
+        </Text>
+        <View
+          style={{
+            backgroundColor: '#16425b',
+            paddingHorizontal: 8,
+            borderRadius: 5,
+            justifyContent: 'center',
+            borderColor: '#0582ca',
+            borderWidth: 2,
+          }}
+        >
+          <TextInput
+            style={{
+              color: 'white',
+              fontFamily: 'OpenSans-Regular',
+              fontSize: 18,
+            }}
+            placeholder="Ex: 41"
+            placeholderTextColor="#999"
+            onChangeText={(text) => setCityCode(text)}
+            keyboardType="numeric"
+            value={cityCode}
+          />
+        </View>
       </ScrollView>
-      <TouchableOpacity
+
+      <NextButton
         onPress={() => handleLocationCode()}
-        disabled={!canContinue()}
-        style={styles.bottomBtn}
-      >
-        <Text>Próximo</Text>
-      </TouchableOpacity>
+        canContinue={() => !!canContinue()}
+      />
     </>
   );
 };
 
 const styles = StyleSheet.create({
   body: { margin: 16 },
-
   bottomBtn: {
     height: 60,
     backgroundColor: 'green',
@@ -97,10 +128,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    marginTop: 8,
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
+    marginVertical: 12,
+    fontSize: 28,
+    letterSpacing: 2,
+    fontFamily: 'OpenSans-Bold',
+    color: 'white',
   },
 });
 

@@ -1,14 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Alert,
-} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
+import NextButton from '../components/NextButton';
+import OptionButton from '../components/OptionButton';
 import { useCode } from '../hooks/codeProvider';
 
 export interface BluehandCode {
@@ -51,7 +44,7 @@ const StudiedManuals: React.FC = () => {
     }
   }, [blueHandCode, updateBlueHandCode, alien, zombie, step, updateStep]);
 
-  const canContinue = useCallback(() => {
+  const canContinue = useCallback((): boolean => {
     return alien || zombie;
   }, [alien, zombie]);
 
@@ -64,28 +57,23 @@ const StudiedManuals: React.FC = () => {
         >
           <Text style={styles.sectionTitle}>Manuais estudados</Text>
 
-          <TouchableOpacity
-            onPress={() => setZombie((prevState) => !prevState)}
-            style={zombie ? styles.button : styles.disabledButton}
-          >
-            <Text>Protocolo Bluehand: Zumbis</Text>
-          </TouchableOpacity>
+          <OptionButton
+            isActive={alien}
+            title="Protocolo Bluehand: Alienígenas"
+            toggleState={() => setAlien((prevState) => !prevState)}
+          />
 
-          <TouchableOpacity
-            onPress={() => setAlien((prevState) => !prevState)}
-            style={alien ? styles.button : styles.disabledButton}
-          >
-            <Text>Protocolo Bluehand: Alienígenas</Text>
-          </TouchableOpacity>
+          <OptionButton
+            isActive={zombie}
+            title="Protocolo Bluehand: Zumbis"
+            toggleState={() => setZombie((prevState) => !prevState)}
+          />
         </ScrollView>
 
-        <TouchableOpacity
+        <NextButton
           onPress={() => handleManuals()}
-          disabled={!canContinue()}
-          style={styles.bottomBtn}
-        >
-          <Text>Próximo</Text>
-        </TouchableOpacity>
+          canContinue={() => canContinue()}
+        />
       </SafeAreaView>
     </>
   );
@@ -106,15 +94,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   disabledButton: {
-    backgroundColor: 'rgba(180, 52, 52, 0.5)',
+    backgroundColor: 'rgba(27, 38, 44, 0.5)',
     marginVertical: 8,
     padding: 16,
   },
   sectionTitle: {
-    marginTop: 8,
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
+    marginVertical: 12,
+    fontSize: 28,
+    letterSpacing: 2,
+    fontFamily: 'OpenSans-Bold',
+    color: 'white',
   },
 });
 
